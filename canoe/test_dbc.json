@@ -1,0 +1,16 @@
+{
+  "messages": {
+    "256": {
+      "name": "LightCmd",
+      "signals": {
+        "light_state": {"start_bit": 0, "length": 1}
+      }
+    },
+    "257": {
+      "name": "DoorCmd",
+      "signals": {
+        "door_lock": {"start_bit": 0, "length": 1}
+      }
+    }
+  }
+}
