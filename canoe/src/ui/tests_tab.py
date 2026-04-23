@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import (
 )
 
 from src.simulation.bcm_model import BCM
-from src.testing.reporting import build_test_report, render_html_report
+from src.testing.reporting import build_test_report
 
 
 class TestsTabMixin:
@@ -59,8 +59,6 @@ class TestsTabMixin:
             ('Run All', self._run_all_tests),
             ('Run Selected', self._run_selected_test),
             ('Reset', self._reset_tests),
-            ('Export JSON', lambda: self._export_test_report('json')),
-            ('Export HTML', lambda: self._export_test_report('html')),
         ]:
             b = QPushButton(lbl)
             b.clicked.connect(fn)
@@ -158,23 +156,3 @@ class TestsTabMixin:
         self.test_summary.setText(
             f"Total: {summary['total']} | Pass: {summary['pass']} | Fail: {summary['fail']} | Error: {summary['error']}"
         )
-
-    def _export_test_report(self, export_type='json'):
-        rows = self._collect_test_rows()
-        report = build_test_report(rows)
-        if export_type == 'json':
-            fn, _ = QFileDialog.getSaveFileName(self, 'Export Test Report', 'test_report.json', 'JSON (*.json)')
-            if not fn:
-                return
-            import json
-
-            with open(fn, 'w', encoding='utf-8') as f:
-                json.dump(report, f, indent=2)
-            self.statusBar().showMessage(f'Exported test report: {fn}')
-        else:
-            fn, _ = QFileDialog.getSaveFileName(self, 'Export Test Report', 'test_report.html', 'HTML (*.html)')
-            if not fn:
-                return
-            with open(fn, 'w', encoding='utf-8') as f:
-                f.write(render_html_report(report))
-            self.statusBar().showMessage(f'Exported test report: {fn}')

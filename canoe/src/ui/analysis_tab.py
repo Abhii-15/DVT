@@ -32,15 +32,6 @@ class AnalysisTabMixin:
         eb = QPushButton('Export CSV')
         eb.clicked.connect(lambda: self._export_trace('csv'))
         fr.addWidget(eb)
-        xl = QPushButton('Export HTML')
-        xl.clicked.connect(lambda: self._export_trace('html'))
-        fr.addWidget(xl)
-        xj = QPushButton('Export JSON')
-        xj.clicked.connect(lambda: self._export_trace('json'))
-        fr.addWidget(xj)
-        xx = QPushButton('Export XLSX')
-        xx.clicked.connect(lambda: self._export_trace('xlsx'))
-        fr.addWidget(xx)
         tl.addLayout(fr)
 
         self.trace_model = TraceTableModel(self)
@@ -149,34 +140,16 @@ class AnalysisTabMixin:
         self.graph_count_label.setText('Frames: 0')
 
     def _export_trace(self, export_type='csv'):
-        base_filters = {
-            'csv': 'CSV (*.csv)',
-            'html': 'HTML (*.html)',
-            'json': 'JSON (*.json)',
-            'xlsx': 'Excel (*.xlsx)',
-        }
-        ext = export_type.lower()
-        fn, _ = QFileDialog.getSaveFileName(self, 'Export Trace', f'trace.{ext}', base_filters.get(ext, 'CSV (*.csv)'))
+        fn, _ = QFileDialog.getSaveFileName(self, 'Export Trace', 'trace.csv', 'CSV (*.csv)')
         if not fn:
             return
         try:
             records = self.trace_model.to_records()
-            if ext == 'csv':
-                import csv
-                with open(fn, 'w', newline='', encoding='utf-8') as f:
-                    writer = csv.DictWriter(f, fieldnames=self.trace_model.HEADERS)
-                    writer.writeheader()
-                    writer.writerows(records)
-            elif ext == 'json':
-                import json
-                with open(fn, 'w', encoding='utf-8') as f:
-                    json.dump(records, f, indent=2)
-            elif ext == 'html':
-                import pandas as pd
-                pd.DataFrame(records).to_html(fn, index=False)
-            elif ext == 'xlsx':
-                import pandas as pd
-                pd.DataFrame(records).to_excel(fn, index=False)
+            import csv
+            with open(fn, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=self.trace_model.HEADERS)
+                writer.writeheader()
+                writer.writerows(records)
             self.statusBar().showMessage(f'Exported: {fn}')
         except Exception as e:
             self.statusBar().showMessage(f'Export failed: {e}')
