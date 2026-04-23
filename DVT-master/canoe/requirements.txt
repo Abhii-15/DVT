@@ -1,0 +1,6 @@
+python-can
+matplotlib
+pandas
+pyqt5
+pyqtgraph
+cantools
