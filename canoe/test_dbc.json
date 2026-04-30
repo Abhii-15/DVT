@@ -1,0 +1,46 @@
+{
+  "messages": {
+    "256": {
+      "name": "LightCmd",
+      "length": 8,
+      "signals": {
+        "light_state": {"start_bit": 0, "length": 1}
+      }
+    },
+    "257": {
+      "name": "DoorCmd",
+      "length": 8,
+      "signals": {
+        "door_lock": {"start_bit": 0, "length": 1}
+      }
+    },
+    "258": {
+      "name": "WindowCmd",
+      "length": 8,
+      "signals": {
+        "window_position": {"start_bit": 0, "length": 8}
+      }
+    },
+    "259": {
+      "name": "HornCmd",
+      "length": 8,
+      "signals": {
+        "horn_active": {"start_bit": 0, "length": 1}
+      }
+    },
+    "260": {
+      "name": "FuelLevel",
+      "length": 8,
+      "signals": {
+        "fuel_percent": {"start_bit": 0, "length": 8}
+      }
+    },
+    "261": {
+      "name": "AlarmStatus",
+      "length": 8,
+      "signals": {
+        "alarm_active": {"start_bit": 0, "length": 1}
+      }
+    }
+  }
+}
